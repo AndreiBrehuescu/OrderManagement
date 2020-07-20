@@ -1,0 +1,48 @@
+drop database if exists warehouse;
+create database warehouse;
+use warehouse;
+
+create table if not exists customer(
+	idCustomer int primary key auto_increment not null,
+    customerName varchar(45),
+    address varchar(45)
+);
+
+create table if not exists orders(
+	idOrder int primary key auto_increment not null,
+    idCustomer int,
+    total float
+);
+
+create table if not exists product(
+	idProduct int primary key auto_increment not null,
+    productName varchar(45),
+    quantity int,
+    price float
+);
+
+create table if not exists orderproducts(
+	idOrderProducts int primary key auto_increment not null,
+    idProduct int,
+    idOrder int,
+    quantity int,
+    total float
+);
+
+alter table orders
+add constraint fk_customer_order
+foreign key (idCustomer) references customer(idCustomer)
+on delete cascade
+on update cascade;
+
+alter table OrderProducts
+add constraint fk_OrderProduct_product
+foreign key (idProduct) references product(idProduct)
+on delete cascade
+on update cascade;
+
+alter table OrderProducts
+add constraint fk_OrderProduct_order
+foreign key (idOrder) references orders(idOrder)
+on delete cascade
+on update cascade;
